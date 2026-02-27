@@ -30,10 +30,29 @@ public class Main {
                     driver.findElement(By.xpath("//div[text()='Sauce Labs Bolt T-Shirt']/ancestor::div[@class='inventory_item']")),
                     driver.findElement(By.xpath("//div[text()='Sauce Labs Fleece Jacket']/ancestor::div[@class='inventory_item']")),
                     driver.findElement(By.xpath("//div[text()='Sauce Labs Backpack']/ancestor::div[@class='inventory_item']")),
+                    driver.findElement(By.xpath("//div[text()='Test.allTheThings() T-Shirt (Red)']/ancestor::div[@class='inventory_item']"))
             };
+
+            for(WebElement container : containers){
+                obtenerNombrePrecio(container);
+                container.findElement(By.tagName("button")).click();
+            }
+
+            String cart_badge = wait.until(ExpectedConditions.presenceOfElementLocated(By.className("shopping_cart_badge"))).getText();
+
+            assert cart_badge.equals("4");
+
+            System.out.println("Productos agregados exitosamente");
         }
         finally{
             driver.quit();
         }
+    }
+
+    private static void obtenerNombrePrecio(WebElement container){
+        String nombre = container.findElement(By.className("inventory_item_name")).getText();
+        String precio = container.findElement(By.className("inventory_item_price")).getText();
+        System.out.println("Producto: " + nombre);
+        System.out.println("Precio: " + precio);
     }
 }
